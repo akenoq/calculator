@@ -3,28 +3,9 @@ op_dict = {
     '-': 1,
     '*': 2,
     '/': 2,
-    '(': 2,
-    ')': 2
+    '(': 0,
+    ')': 0
 }
-
-
-def add_brackets(arr, n_mul, op):
-    index = 0
-    for i in range(0, n_mul):
-        for j in range(index + 1, len(arr)):
-            print('INDEX TWO = ', index)
-            if arr[j] == op:
-                print("INDEX = ", index)
-                index = j
-                a = arr[j - 1]
-                b = arr[j + 1]
-                if b != '(' and a != ')':
-                    arr.insert(j - 1, '(')
-                    arr.insert(j + 3, ')')
-                print('INDEX = ', index)
-                break
-                # arr.insert(0, '(')
-                # arr.append(')')
 
 
 def is_int(n):
@@ -48,7 +29,7 @@ def calc_stack(op, num):
                 ans = op_1 - op_2
                 num.append(ans)
             op.pop()
-        elif op[len(op) - 1] == '*' or op[len(op) - 1] == '/':  # если до этого в стеке *//, то вычисляем
+        elif op_dict[op[len(op) - 1]] == 2:  # если до этого в стеке *//, то вычисляем
             if op[len(op) - 1] == '*':
                 ans = num.pop() * num.pop()
                 num.append(ans)
@@ -60,10 +41,8 @@ def calc_stack(op, num):
             op.pop()
             print('POP = ', op)
         if len(op) != 0:
-            # op.pop()
             p = False
         else:
-            print('LOOOOOOOOOOL')
             p = True
         print('P = ', p)
         print('POP = ', op)
@@ -98,7 +77,7 @@ def calc(arr):
                         ans = op_1 - op_2
                         op.pop()
                     num.append(ans)
-                elif op[len(op) - 1] == '*' or op[len(op) - 1] == '/':
+                elif op_dict[op[len(op) - 1]] == 2:
                     if op[len(op) - 1] == '*':
                         ans = num.pop() * num.pop()
                         op.pop()
@@ -159,9 +138,8 @@ def calc(arr):
                             op_1 = num.pop()
                             ans = op_1 / op_2
                             num.append(ans)
-
                     op.pop()
-                    print('POP = ', op)
+                    # print('POP = ', op)
                 if len(op) != 0:
                     p = op[len(op) - 1]
                     if p == '(':  # если дошли до левой скобки, выходим из цикла
@@ -170,11 +148,9 @@ def calc(arr):
                     else:
                         p = False
                 else:
-                    print('LOOOOOOOOOOL')
                     p = True
                 print('P = ', p)
                 print('POP = ', op)
-
                 print('NUM 4 = ', num)
                 print('OP 4 = ', op)
         else:
@@ -187,31 +163,23 @@ def calc(arr):
 
 
 def processing(arr):
-    # можно одним пробегом по arr
-    n_mul = arr.count('*')
+    # n_mul = arr.count('*')
     # add_brackets(arr, n_mul, '*')
-    print("MUL = ", arr)
-
-    n_div = arr.count('/')
+    # n_div = arr.count('/')
     # add_brackets(arr, n_div, '/')
-    print("DIV = ", arr)
-
-    print('ADDED BRACKETS = ', ''.join(arr))
 
     ans = calc(arr)
     print('\nANS = ', ans)
 
 
-def start():
-    digits = '1234567890'
+def make_arr(s):
+    import re
     arr = []
-    s = str(input("input your statement \n format (a*b)+c+n*m+z/w => "))
-    # убрать пробелы strip
     len_s = len(s)
     i = 0
     while i < len_s:
         elem = ''
-        while s[i] in digits:
+        while re.match(r'\d', s[i]):
             elem += s[i]
             i += 1
             if i >= len_s:
@@ -220,6 +188,13 @@ def start():
             elem = s[i]
             i += 1
         arr.append(elem)
+    return arr
+
+
+def start():
+    s = str(input("input your statement \n format (a*b)+c+n*m+z/w => "))
+    s = s.replace(' ', '')
+    arr = make_arr(s)
 
     print("arr = ", arr)
 
@@ -227,3 +202,21 @@ def start():
 
 
 start()
+
+# def add_brackets(arr, n_mul, op):
+#     index = 0
+#     for i in range(0, n_mul):
+#         for j in range(index + 1, len(arr)):
+#             print('INDEX TWO = ', index)
+#             if arr[j] == op:
+#                 print("INDEX = ", index)
+#                 index = j
+#                 a = arr[j - 1]
+#                 b = arr[j + 1]
+#                 if b != '(' and a != ')':
+#                     arr.insert(j - 1, '(')
+#                     arr.insert(j + 3, ')')
+#                 print('INDEX = ', index)
+#                 break
+#                 # arr.insert(0, '(')
+#                 # arr.append(')')
