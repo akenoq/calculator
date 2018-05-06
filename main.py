@@ -195,7 +195,8 @@ def start():
     s = str(input("input your statement \n format (a*b)+c+n*m+z/w => "))
     s = s.replace(' ', '')
     arr = make_arr(s)
-
+    arr.insert(0, 0)
+    arr.insert(1, '+')
     print("arr = ", arr)
 
     processing(arr)
